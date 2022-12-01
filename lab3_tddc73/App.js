@@ -25,19 +25,21 @@ import { setContext } from '@apollo/client/link/context';
 import {NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-//import DetailedPage from "./components/DetailedPage";
-import HomePage from "./components/HomePage";
+//import StackNav from './routes/stackNav';
 
+import DetailedPage from "./src/screens/detailedPage";
+import HomePage from "./src/screens/HomePage";
 
 const Stack = createStackNavigator();
 
 const httpLink = createHttpLink({ uri: 'https://api.github.com/graphql' });
+const TOKEN = "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";
 
 const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: GITHUB_TOKEN ? `Bearer ${GITHUB_TOKEN}` : "",
+      authorization: `bearer ${TOKEN}`,
     }
   }
 });
@@ -52,29 +54,29 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-//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
+/*
 
-const App = () => (
+initialRouteName="Home" screenOptions={screenOptions}
+*/
+const App = () => {
+return (
   <ApolloProvider client={client}>
-    <NavigationContainer>
-
-    <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
-        <Stack.Screen
-            name="Home"
-            component={HomePage}
-            options= {{ title: 'Trending repos'}}
-            />
-    </Stack.Navigator>
-    </NavigationContainer>
+        <NavigationContainer>
+        <Stack.Navigator >
+            <Stack.Screen
+                name="Home"
+                component={HomePage}
+                options= {{ title: 'Trending repos'}}
+                />
+            <Stack.Screen
+                name="ReposPage"
+                component={DetailedPage}
+                />
+        </Stack.Navigator>
+        </NavigationContainer>
   </ApolloProvider>
 );
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-
-});
+};
 
 export default App;
