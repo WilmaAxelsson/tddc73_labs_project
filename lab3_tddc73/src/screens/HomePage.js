@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity } from 'react-native';
-//import { RecyclerListView } from 'recyclerlistview';
 import styles from '../components/Styles';
 import { Picker } from '@react-native-picker/picker';
 import { gql, useQuery } from '@apollo/client';
@@ -36,12 +35,12 @@ const REPO_QUERY = gql`
   }
 `;
 
-    function fetchQuery(searchLang) {
+    function fetchQuery(searchLanguage) {
         const { loading, error, data } = useQuery(REPO_QUERY, {
             variables:
-                searchLang === 'any'
+                searchLanguage === 'any'
                     ? { Search: 'stars:>1000' }
-                    : { Search: 'stars:>1000 language:' + searchLang },
+                    : { Search: 'stars:>1000 language:' + searchLanguage },
         });
 
         if (loading) return 'loading';
@@ -61,33 +60,36 @@ const REPO_QUERY = gql`
 
     const repositories = fetchQuery(search);
 
-    const Separator = () => (<View style={styles.separator} />)
 
     return(
     <View style={styles.homeStyle}>
       <FlatList
         data={repositories}
         renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => {navigation.navigate("ReposPage", item)}}>
+        <TouchableOpacity onPress={() => {navigation.navigate("Project", {project: item})}}>
             <View style={styles.repoBox}>
                 <View style= {styles.titleRepo}>
                     <Text style={styles.textTitle}>{item.name}</Text>
                 </View>
             <View style={styles.descriptionRepo}>
                     <Text style={styles.textDescription}>{item.description}</Text>
+            <View style={styles.forksBox}>
+                <Text style={styles.forksText}>Forks: {item.forkCount}</Text>
+            </View>
+            <View style={styles.starBox}>
+                <Text style={styles.starText}>Stars: {item.stargazerCount}</Text>
+            </View>
             </View>
             </View>
         </TouchableOpacity>
         )}
         />
-
             <View style={styles.pickerContainer}>
                 <Picker
                     selectedValue={search}
                     onValueChange={(itemValue, itemIndex) => setSearch(itemValue)}
-                    style={styles.pickerStyle}
-                    itemStyle ={styles.pickerStyle}>
-                  <Picker.Item label="Any Language" value="any"/>
+                    style={styles.pickerStyle}>
+                  <Picker.Item label="Pick any language" value="any"/>
                   <Picker.Item label="C" value="c"/>
                   <Picker.Item label="C#" value="c#"/>
                   <Picker.Item label="C++" value="c++"/>
@@ -104,4 +106,5 @@ const REPO_QUERY = gql`
             </View>
         </View>
     );
+
   }

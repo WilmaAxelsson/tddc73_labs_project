@@ -25,8 +25,6 @@ import { setContext } from '@apollo/client/link/context';
 import {NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-//import StackNav from './routes/stackNav';
-
 import DetailedPage from "./src/screens/detailedPage";
 import HomePage from "./src/screens/HomePage";
 
@@ -54,23 +52,20 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-/*
-
-initialRouteName="Home" screenOptions={screenOptions}
-*/
 const App = () => {
 return (
   <ApolloProvider client={client}>
         <NavigationContainer>
-        <Stack.Navigator >
+        <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
             <Stack.Screen
                 name="Home"
                 component={HomePage}
-                options= {{ title: 'Trending repos'}}
+                options= {{ title: 'Trending repos on Github'}}
                 />
             <Stack.Screen
-                name="ReposPage"
+                name="Project"
                 component={DetailedPage}
+                options= {{ title: 'Project info'}}
                 />
         </Stack.Navigator>
         </NavigationContainer>
