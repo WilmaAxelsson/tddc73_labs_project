@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 
 import AccountRegistration from './components/AccountRegistration';
-import PasswordStrength from './components/PasswordStrength';
 
  const initialState = {
     fullName: '',
