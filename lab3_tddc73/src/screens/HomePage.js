@@ -35,7 +35,7 @@ const REPO_QUERY = gql`
   }
 `;
 
-    function fetchQuery(searchLanguage) {
+    function fetchNewQuery(searchLanguage) {
         const { loading, error, data } = useQuery(REPO_QUERY, {
             variables:
                 searchLanguage === 'any'
@@ -48,9 +48,7 @@ const REPO_QUERY = gql`
             console.log(`Error: ${error.message}`);
             return 'error';
         }
-
         const repositories = data.search.nodes;
-
         return repositories;
     }
 
@@ -58,7 +56,7 @@ const REPO_QUERY = gql`
 
     const [search, setSearch] = useState('any');
 
-    const repositories = fetchQuery(search);
+    const repositories = fetchNewQuery(search);
 
 
     return(
