@@ -19,7 +19,27 @@ import React, { useState } from 'react';
 
 import Captcha from './Captcha';
 
-const AccountRegistration = ({state, onUpdateState}) => {
+ const initialState = {
+    fullName: '',
+    userName: '',
+    email: '',
+    gender: '',
+    password: '',
+    month: '',
+    day: '',
+    year: ''
+  };
+
+const AccountRegistration = ({navigation}) => {
+
+      const [state, setState] = useState(initialState);
+
+      const onUpdateState = (keyName, value) => {
+        setState({
+          ...state,
+          [keyName]: value,
+        });
+      };
 
     const [focusName, setFocusName] = useState(false);
     const [focusUserName, setFocusUserName] = useState(false);
@@ -33,23 +53,22 @@ const AccountRegistration = ({state, onUpdateState}) => {
     const resetValues = () => {
 
     if (state.fullName.trim() === "") {
-                  Alert.alert('Full name required');
+                Alert.alert('Full name required');
     } else if (state.email.trim() === "") {
                 Alert.alert('Email required');
+    } else if (state.email.indexOf("@") <= 0){ // if @ does not exist, indexOf returns -1
+               Alert.alert('Email must include a @');
     } else if(state.userName.trim() === "") {
                 Alert.alert('Username required');
     } else if (state.password.trim() === "") {
                 Alert.alert('Password required');
     } else {
-                  Alert.alert('Account registered!');
+                navigation.navigate("Next", {});
     }
-
-
     }
 
     return (
     <View style={styles.textContainer}>
-     <Text style={styles.titleText}>Register your account!</Text>
          <Text style={styles.textStyle}>Full Name</Text>
                 <View style={styles.row}>
                 <TextInput
@@ -148,8 +167,7 @@ const AccountRegistration = ({state, onUpdateState}) => {
                     <Text style={styles.label}>Do you approve of our Terms and conditions?</Text>
                     <Text style={{color: 'red', fontSize: 20}}>*</Text>
                 </View>
-                <Captcha/>
-                <Button title="Submit" onPress={() => resetValues()} />
+                <Button title="Next step" onPress={() => resetValues()} />
 
     </View>
     );
@@ -159,14 +177,10 @@ const AccountRegistration = ({state, onUpdateState}) => {
     textContainer: {
         backgroundColor: '#ffffff',
         flex: 1,
-        paddingTop: 1,
-        marginLeft: 3,
+        paddingTop: 25,
+        marginLeft: 5,
         marginRight: 10,
           },
-    titleText: {
-        fontSize: 25,
-        marginTop: -20,
-    },
     textStyle: {
         fontSize: 14,
         padding: 6,

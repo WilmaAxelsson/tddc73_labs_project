@@ -1,5 +1,3 @@
-/* Account registration
-*/
 import React, {useState} from 'react';
 import type {Node} from 'react';
 import {
@@ -12,40 +10,41 @@ import {
 } from 'react-native';
 
 import AccountRegistration from './components/AccountRegistration';
+import Captcha from './components/Captcha';
+import {NavigationContainer} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
- const initialState = {
-    fullName: '',
-    userName: '',
-    email: '',
-    gender: '',
-    password: '',
-    month: '',
-    day: '',
-    year: ''
-  };
+
+const Stack = createStackNavigator();
+
+const screenOptions = {
+    headerStyle: {backgroundColor: 'black'},
+    headerTintColor: 'white',
+}
 
 const App = ()  => {
 
-  const [state, setState] = useState(initialState);
-
-  const updateState = (keyName, value) => {
-    setState({
-      ...state,
-      [keyName]: value,
-    });
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
-    <AccountRegistration state={state} onUpdateState={updateState}/>
-    </SafeAreaView>
+            <NavigationContainer>
+                    <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
+                        <Stack.Screen
+                            name="Home"
+                            component={AccountRegistration}
+                            options= {{ title: 'Register your account!'}}
+                            />
+                        <Stack.Screen
+                            name="Next"
+                            component={Captcha}
+                            options= {{ title: 'Prove you are not a robot'}}
+                            />
+                    </Stack.Navigator>
+                    </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
     container: {
-    flex: 1,
-    margin: 50,
+    margin: 10,
     },
 });
 

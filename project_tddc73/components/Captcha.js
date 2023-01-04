@@ -15,21 +15,10 @@ import {
 import React from 'react';
 import { Component } from 'react';
 
-/*    const initialStates = {
-        textInput_dummy: 0,
-        randNumb1: Math.floor(Math.random()*100) + 1,
-        randNumb2: Math.floor(Math.random()*100) + 1,
-        sum_dummy: 0,
-    };*/
+const Captcha = ({ navigation }) =>{
 
-const Captcha = () =>{
-
-    //const [state, setState] = React.useState(initialStates);
-
-    //state.sum_dummy = state.randNumb1 + state.randNumb2;
-
-    const [stateNumb1, setStateNumb1] = React.useState(Math.floor(Math.random()*100) + 1);
-    const [stateNumb2, setStateNumb2] = React.useState(Math.floor(Math.random()*100) + 1);
+    const [stateNumb1, setStateNumb1] = React.useState(Math.floor(Math.random()*50) + 1);
+    const [stateNumb2, setStateNumb2] = React.useState(Math.floor(Math.random()*50) + 1);
     const [stateSum, setStateSum] = React.useState(stateNumb1 + stateNumb2);
 
   const updateState = (keyName, value) => {
@@ -39,41 +28,30 @@ const Captcha = () =>{
     });
   };
 
-
-
     captchaGenerator = async () => {
-        var numb1 = Math.floor(Math.random()*100) + 1;
-        var numb2 = Math.floor(Math.random()*100) + 1;
+        var numb1 = Math.floor(Math.random()*50) + 1;
+        var numb2 = Math.floor(Math.random()*50) + 1;
 
         var sum = numb1 + numb2;
 
-        //updateState('randNumb1', numb1);
-        //updateState('randNumb2', numb1);
-        //updateState('sum_dummy', sum);
         setStateNumb1(numb1);
         setStateNumb2(numb2);
         setStateSum(sum);
 
-        //setState({ randNumb1: 5, randNumb2: 5});
-        //setState({sum_dummy: sum});
-
-        console.log(stateNumb1);
-
     };
 
     run_captcha =() => {
-        var temp = this.randNumb1 + this.randNumb2;
+        var temp = stateNumb1 + stateNumb2;
 
-        if(state.textInput_dummy == temp){
-            Alert.alert("u done gud");
+        if(stateSum == temp){
+            Alert.alert("You are registered!");
+            navigation.navigate("Home", {});
         }
         else {
-            Alert.alert("u done bad");
+            Alert.alert("You did not enter the correct sum.");
         }
         captchaGenerator();
     }
-
-
 
 return(
     <View style={styles.container}>
@@ -83,7 +61,7 @@ return(
             </Text>
             <TextInput
                 placeholder="Enter sum of numbers here"
-                onChangeText={text => updateState('sum_dummy', text)}
+                onChangeText={text => setStateSum(text)}
                 style={styles.textInputStyle}
                 />
                     <TouchableOpacity onPress={captchaGenerator}>
@@ -91,9 +69,9 @@ return(
                             style={styles.imageStyle} />
 
                     </TouchableOpacity>
-
         </View>
-    </View>
+        <Button title="Submit" onPress={() => run_captcha()}  />
+        </View>
 );
 }
 
@@ -101,19 +79,24 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 50,
     },
     captchaContainer: {
         flexDirection: 'row',
+        margin: 10,
+        padding: 12,
     },
     textStyle: {
-        fontSize: 18,
-        textAlign: 'center',
-        color: 'black',
+        fontSize: 16,
+        padding: 6,
+        margin: 3,
+        color: 'black'
     },
     textInputStyle: {
         textAlign: 'center',
         width: 150,
         height: 40,
+        margin: 5,
         borderWidth: 1,
         borderRadius: 6,
     },
